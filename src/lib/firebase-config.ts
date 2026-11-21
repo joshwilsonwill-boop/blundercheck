@@ -29,5 +29,8 @@ export const firebaseConfig: FirebaseConfig = {
 export const isFirebaseConfigured =
   firebaseConfig.apiKey !== "YOUR_API_KEY" && firebaseConfig.projectId !== "YOUR_PROJECT_ID";
 
-/** Cloud model used for the full-game review and training plan. */
-export const CLOUD_MODEL = "gemini-2.5-flash";
+/** Cloud model used for the full-game review and training plan.
+ * gemini-2.5-flash is restricted to projects that used it before Nov 2026
+ * and 404s for new projects; Google's replacement for new projects is
+ * gemini-3.8-flash (verified against the Gemini API release notes, Nov 2026). */
+export const CLOUD_MODEL = "gemini-3.8-flash";

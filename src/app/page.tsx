@@ -119,7 +119,15 @@ export default function Home() {
     const summary = `Game: ${analysis.white} (White, accuracy ${analysis.accuracy.white}%) vs ${analysis.black} (Black, accuracy ${analysis.accuracy.black}%), result ${analysis.result}. ${analysis.moves.length} moves. Blunders: ${analysis.blunders}, mistakes: ${analysis.mistakes}, inaccuracies: ${analysis.inaccuracies}. Training plan: ${plan ? plan.headline : ""}\n\nWorst moves:\n${worst || "No major mistakes."}`;
     const res = await reviewGameWithAI(summary);
     setAiReviewLoading(false);
-    if (res.ok) setAiReview(res.text);
+    if (res.ok) {
+      setAiReview(res.text);
+    } else {
+      // Never fail silently: show the reason and point at the rule-based
+      // plan, which is always available.
+      setAiReview(
+        `The AI review could not be generated right now (${res.reason ?? "unknown error"}). Your training plan above is the rule-based version and still stands - try the AI review again in a moment.`
+      );
+    }
   }
 
   const aiBadge = {
