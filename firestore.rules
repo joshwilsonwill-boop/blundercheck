@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Game analyses saved by the app. Writes are shape-checked so the
+    // collection cannot be filled with junk; reads are for signed-in
+    // (including anonymous) users, which is how the app works.
+    match /analyses/{docId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasAll([
+             'id', 'white', 'black', 'result', 'moves', 'blunders',
+             'mistakes', 'inaccuracies', 'accuracyWhite', 'accuracyBlack',
+             'pgn', 'date', 'source'
+           ])
+        && request.resource.data.id is string
+        && request.resource.data.white is string
+        && request.resource.data.white.size() <= 100
+        && request.resource.data.black is string
+        && request.resource.data.black.size() <= 100
+        && request.resource.data.result is string
+        && request.resource.data.result.size() <= 10
+        && request.resource.data.moves is int
+        && request.resource.data.moves >= 0
+        && request.resource.data.moves <= 500
+        && request.resource.data.blunders is int
+        && request.resource.data.blunders >= 0
+        && request.resource.data.blunders <= 500
+        && request.resource.data.mistakes is int
+        && request.resource.data.mistakes >= 0
+        && request.resource.data.mistakes <= 500
+        && request.resource.data.inaccuracies is int
+        && request.resource.data.inaccuracies >= 0
+        && request.resource.data.inaccuracies <= 500
+        && request.resource.data.accuracyWhite is number
+        && request.resource.data.accuracyBlack is number
+        && request.resource.data.pgn is string
+        && request.resource.data.pgn.size() <= 20000
+        && request.resource.data.date is string
+        && request.resource.data.source is string;
+      allow update, delete: if false;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
