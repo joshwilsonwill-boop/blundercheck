@@ -85,7 +85,7 @@ export class TinyEngine {
   private E = -1; // en passant square, -1 = none
   private K = [4, 116]; // king squares
   private nodes = 0;
-  private nodeBudget = 20000;
+  private nodeBudget = 80000;
   private PST: number[][];
 
   constructor() {
@@ -407,7 +407,7 @@ export class TinyEngine {
    * Root search: iterative deepening on a fixed node budget.
    * Returns the best move and its score (side-to-move perspective).
    */
-  bestMove(nodeBudget = 20000, maxDepth = 5): SearchResult {
+  bestMove(nodeBudget = 80000, maxDepth = 5): SearchResult {
     this.nodeBudget = nodeBudget;
     this.nodes = 0;
     const legal: number[] = [];

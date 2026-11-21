@@ -83,7 +83,7 @@ function moverValue(evalWhite: number, color: "w" | "b"): number {
 }
 
 export async function analyzePgn(pgn: string, opts: AnalysisOptions = {}): Promise<GameAnalysis> {
-  const nodeBudget = opts.nodeBudget ?? 20000;
+  const nodeBudget = opts.nodeBudget ?? 80000;
   const maxDepth = opts.maxDepth ?? 5;
   const game = new Chess();
   game.loadPgn(pgn);
