@@ -32,5 +32,11 @@ export const isFirebaseConfigured =
 /** Cloud model used for the full-game review and training plan.
  * gemini-2.5-flash is restricted to projects that used it before Nov 2026
  * and 404s for new projects; Google's replacement for new projects is
- * gemini-3.8-flash (verified against the Gemini API release notes, Nov 2026). */
-export const CLOUD_MODEL = "gemini-3.8-flash";
+ * gemini-3.5-flash-lite — Google's named replacement for the retired
+ * gemini-2.5-flash (release notes Nov 2026). Verified live 2026-11-21
+ * 09:15 WAT: answers instantly through the Firebase AI Logic gateway
+ * with a valid App Check token. gemini-3.8-flash also answered in the
+ * same test, but it hung three times before that (two 503s in the live
+ * re-test + one 120s timeout in a direct gateway call), so the lite
+ * model is the safer pick for the demo. */
+export const CLOUD_MODEL = "gemini-3.5-flash-lite";
