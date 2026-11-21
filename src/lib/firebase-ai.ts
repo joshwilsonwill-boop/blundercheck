@@ -20,6 +20,7 @@ import {
   type GenerativeModel,
 } from "firebase/ai";
 import { firebaseConfig, isFirebaseConfigured, CLOUD_MODEL } from "./firebase-config";
+import { initAppCheck } from "./firebase-appcheck";
 
 export type InferencePath = "on_device" | "in_cloud" | "rule-based";
 
@@ -39,6 +40,9 @@ function getFirebaseApp(): FirebaseApp | null {
   if (!isFirebaseConfigured) return null;
   if (!app) {
     app = getApps().length > 0 ? getApps()[0] : initializeApp(firebaseConfig);
+    // AI Logic enforcement is on: App Check must be initialised before the
+    // first AI call so the SDK can exchange the debug token.
+    initAppCheck(app);
   }
   return app;
 }
